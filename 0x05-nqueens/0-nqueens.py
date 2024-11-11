@@ -6,132 +6,65 @@ N Queens Problem using Backtracking
 import sys
 
 
-def queens(chessBoard, row, n, resolve):
+def backtrack(r, n, cols, pos, neg, board):
     """
+    Backtrack function to find a solution
+    """
+    if r == n:
+        res = []
+        for i in range(len(board)):
+            for k in range(len(board[i])):
+                if board[i][k] == 1:
+                    res.append((i, k))
+        print(res)
+        return
+
+    for c in range(n):
+        if c in range(n):
+            if c in cols or (r + c) in pos or (r - c) in neg:
+                continue
+
+            cols.add(c)
+            pos.add(r + c)
+            neg.add(r - c)
+            board[r][c] = 1
+
+            backtrack(r + 1, n, cols, pos, neg, board)
+
+            cols.remove(c)
+            pos.remove(r + c)
+            neg.remove(r - c)
+            board[r][c] = 0
+
+
+def nqueens(n):
+    """
+    Solution to n queens problem
     Args:
-        chessboard (list)
-        row (int)
-        n (int)
-        resolve (list)
-
-    Returns:
-        resolve (list)
+        n (int): Number of queens, must be >= 4
+    Return:
+        List of lists representing coordinates of each
+        queen for all possible solutions
     """
-    if n == len(chessBoard):
-        resolve.append(extract(chessBoard))
-        return resolve
+    cols = set()
+    pos_diag = set()
+    neg_diag = set()
+    board = [[0] * n for _ in range(n)]
 
-    for col in range(len(chessBoard)):
-        if chessBoard[row][col] == -1:
-            demo = copyBoard(chessBoard)
-            demo[row][col] = 1
-            cancel(demo, row, col)
-            resolve = queens(demo, row + 1, n + 1, resolve)
-        return resolve
-
-
-def cancel(chessBoard, row, col):
-    """
-    Cancels the current row and column in the chessboard
-    Args:
-     chessBoard (list)
-     row (int)
-     col (int)
-    """
-    length = len(chessBoard)
-    """Cancel forward positions"""
-    for c in range(col + 1, length):
-        chessBoard[row][c] = 0
-    """Cancel Backward positions"""
-    for c in range(col - 1, -1, -1):
-        chessBoard[row][c] = 0
-    """Cancel down positions"""
-    for r in range(row + 1, length):
-        chessBoard[r][col] = 0
-    """Cancel up positions"""
-    for r in range(row - 1, -1, -1):
-        chessBoard[r][col] = 0
-    """Cancel right downward diagonal positions"""
-    c = col + 1
-    for r in range(row + 1, length):
-        if c >= length:
-            break
-        chessBoard[r][c] = 0
-        c += 1
-    """Cancel left upward diagonal positions"""
-    c = col - 1
-    for r in range(row - 1, -1, -1):
-        if c < 0:
-            break
-        chessBoard[r][c] = 0
-        c -= 1
-    """Cancel right upward diagonal positions"""
-    c = col + 1
-    for r in range(row - 1, -1, -1):
-        if c >= length:
-            break
-        chessBoard[r][c] = 0
-        c += 1
-    """Cancel left downward diagonal positions"""
-    c = col - 1
-    for r in range(row + 1, length):
-        if c < 0:
-            break
-        chessBoard[r][c] = 0
-        c -= 1
-
-
-def chessBoard(N):
-    """Create a board of size N * N"""
-    chessBoard = []
-
-    """rows"""
-    for row in range(N):
-        chessBoard.append([])
-
-    """columns"""
-    for row in chessBoard:
-        for n in range(N):
-            row.append(-1)
-
-    return chessBoard
-
-
-def copyBoard(chessBoard):
-    """Makes a copy of the chessboard"""
-    if isinstance(chessBoard, list):
-        """recursively copy nested lists"""
-        return list(map(copyBoard, chessBoard))
-    return chessBoard
-
-
-def extract(chessBoard):
-    """Extracts the solutions from the chessboard"""
-    outcome = []
-    for row in range(len(chessBoard)):
-        for col in range(len(chessBoard)):
-            if chessBoard[row][col] == 1:
-                outcome.append((row, col))
-                break
-    return outcome
-
-
-def execute():
-    if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
-    if sys.argv[1].isnumeric() is False:
-        print("N must be a number")
-        sys.exit(1)
-    if int(sys.argv[1]) < 4:
-        print("N must be at least 4")
-        sys.exit(1)
-
-    chess = chessBoard(int(sys.argv[1]))
-    result = queens(chess, 0, 0, [])
-    for row in result:
-        print(row)
+    backtrack(0, n, cols, pos_diag, neg_diag, board)
 
 
 if __name__ == "__main__":
-    execute()
+    n = sys.argv
+    if len(n) != 2:
+        print("Usage: nqueens N")
+        sys.exit(1)
+    try:
+        nn = int(n[1])
+        if nn < 4:
+            print("N must be at least 4")
+            sys.exit(1)
+        nqueens(nn)
+    except ValueError:
+        print("N must be a number")
+        sys.exit(1)
