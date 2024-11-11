@@ -6,7 +6,7 @@ N Queens Problem using Backtracking
 import sys
 
 
-def backtrack(r, n, cols, pos, neg, board):
+def backtrack(r, n, cols, pos, neg, board, solutions):
     """
     Backtrack function to find a solution
     """
@@ -15,26 +15,25 @@ def backtrack(r, n, cols, pos, neg, board):
         for i in range(len(board)):
             for k in range(len(board[i])):
                 if board[i][k] == 1:
-                    res.append((i, k))
-        print(res)
+                    res.append([i, k])
+        solutions.append(res)
         return
 
     for c in range(n):
-        if c in range(n):
-            if c in cols or (r + c) in pos or (r - c) in neg:
-                continue
+        if c in cols or (r + c) in pos or (r - c) in neg:
+            continue
 
-            cols.add(c)
-            pos.add(r + c)
-            neg.add(r - c)
-            board[r][c] = 1
+        cols.add(c)
+        pos.add(r + c)
+        neg.add(r - c)
+        board[r][c] = 1
 
-            backtrack(r + 1, n, cols, pos, neg, board)
+        backtrack(r + 1, n, cols, pos, neg, board, solutions)
 
-            cols.remove(c)
-            pos.remove(r + c)
-            neg.remove(r - c)
-            board[r][c] = 0
+        cols.remove(c)
+        pos.remove(r + c)
+        neg.remove(r - c)
+        board[r][c] = 0
 
 
 def nqueens(n):
@@ -46,25 +45,29 @@ def nqueens(n):
         List of lists representing coordinates of each
         queen for all possible solutions
     """
+    solutions = []
     cols = set()
     pos_diag = set()
     neg_diag = set()
     board = [[0] * n for _ in range(n)]
 
-    backtrack(0, n, cols, pos_diag, neg_diag, board)
+    backtrack(0, n, cols, pos_diag, neg_diag, board, solutions)
+
+    for sol in solutions:
+        print(sol)
 
 
 if __name__ == "__main__":
-    n = sys.argv
-    if len(n) != 2:
+    args = sys.argv
+    if len(args) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
     try:
-        nn = int(n[1])
-        if nn < 4:
+        n = int(args[1])
+        if n < 4:
             print("N must be at least 4")
             sys.exit(1)
-        nqueens(nn)
+        nqueens(n)
     except ValueError:
         print("N must be a number")
         sys.exit(1)
