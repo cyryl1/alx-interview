@@ -5,6 +5,7 @@ N Queens Problem using Backtracking
 
 import sys
 
+
 def queens(chessBoard, row, n, resolve):
     """
     Args:
@@ -19,7 +20,7 @@ def queens(chessBoard, row, n, resolve):
     if n == len(chessBoard):
         resolve.append(extract(chessBoard))
         return resolve
-    
+
     for col in range(len(chessBoard)):
         if chessBoard[row][col] == -1:
             demo = copyBoard(chessBoard)
@@ -27,6 +28,7 @@ def queens(chessBoard, row, n, resolve):
             cancel(demo, row, col)
             resolve = queens(demo, row + 1, n + 1, resolve)
         return resolve
+
 
 def cancel(chessBoard, row, col):
     """
@@ -78,6 +80,7 @@ def cancel(chessBoard, row, col):
         chessBoard[r][c] = 0
         c -= 1
 
+
 def chessBoard(N):
     """Create a board of size N * N"""
     chessBoard = []
@@ -93,9 +96,10 @@ def chessBoard(N):
 
     return chessBoard
 
+
 def copyBoard(chessBoard):
     """Makes a copy of the chessboard"""
-    if type(chessBoard) == list:
+    if isinstance(chessBoard, list):
         """recursively copy nested lists"""
         return list(map(copyBoard, chessBoard))
     return chessBoard
@@ -110,6 +114,7 @@ def extract(chessBoard):
                 outcome.append((row, col))
                 break
     return outcome
+
 
 def execute():
     if len(sys.argv) != 2:
