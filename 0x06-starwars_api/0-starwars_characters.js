@@ -1,30 +1,46 @@
 #!/usr/bin/node
 
-const args = process.argv;
-const movieId = args[2];
 const request = require('request');
-const url = `https://swapi-api.alx-tools.com/api/films/${movieId}`;
 
-request(url, function (error, response, body) {
+// Get the movie ID from command line arguments
+const movieId = process.argv[2];
+
+if (!movieId) {
+  console.error('Usage: ./0-starwars_characters.js <movie_id>');
+  process.exit(1);
+}
+
+const url = `https://swapi.dev/api/films/${movieId}/`;
+
+request(url, { json: true }, (error, response, body) => {
   if (error) {
-    console.error('Error: ', error);
+    console.error('Error fetching movie:', error);
+    return;
   }
 
-  if (response.statusCode === 200) {
-    // console.log('Status Code: ', response.statusCode);
-    const result = JSON.parse(body);
-    const characters = result.characters;
-    for (let i = 0; i < characters.length; i++) {
-      request(characters[i], function (error, response, body) {
-        if (error) {
-          console.error('Error: ', error);
-        }
-
-        if (response.statusCode === 200) {
-          const character = JSON.parse(body);
-          console.log(character.name);
-        }
-      });
-    }
+  if (response.statusCode !== 200) {
+    console.error(`Failed to retrieve movie. Status Code: ${response.statusCode}`);
+    return;
   }
+
+  const characters = body.characters;
+
+  if (!characters) {
+    console.error('No characters found for this movie.');
+    return;
+  }
+
+  characters.forEach((characterUrl) => {
+    request(characterUrl, { json: true }, (error, response, characterBody) => {
+      if (error) {
+        console.error('Error fetching character:', error);
+        return;
+      }
+      if (response.statusCode === 200) {
+        console.log(characterBody.name);
+      } else {
+        console.error(`Failed to retrieve character. Status Code: ${response.statusCode}`);
+      }
+    });
+  });
 });
