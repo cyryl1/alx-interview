@@ -15,12 +15,12 @@ const url = `https://swapi.dev/api/films/${movieId}/`;
 request(url, { json: true }, (error, response, body) => {
   if (error) {
     console.error('Error fetching movie:', error);
-    return;
+    process.exit(1);
   }
 
   if (response.statusCode !== 200) {
     console.error(`Failed to retrieve movie. Status Code: ${response.statusCode}`);
-    return;
+    process.exit(1);
   }
 
   const characters = body.characters;
@@ -41,6 +41,8 @@ request(url, { json: true }, (error, response, body) => {
       } else {
         console.error(`Failed to retrieve character. Status Code: ${response.statusCode}`);
       }
+      // Exit the script after fetching all characters
+      process.exit(0);
     });
   });
 });
