@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """0-rotate_2d_matrix"""
 
+
 def rotate_2d_matrix(matrix):
     """Rotate a square by 90 degree
     Args:
@@ -15,11 +16,11 @@ def rotate_2d_matrix(matrix):
 
     for i in range(m):
         tr[i].reverse()
-    
+
     for i in range(m):
         for j in range(n):
             matrix[i][j] = tr[i][j]
-    
+
     # res = [[0] * n for _ in range(n)]
     # for i in range(n):
     #     for j in range(n):
@@ -28,4 +29,3 @@ def rotate_2d_matrix(matrix):
     # for i in range(n):
     #     for j in range(n):
     #         matrix[i][j] = res[i][j]
-
