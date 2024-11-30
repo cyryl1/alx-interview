@@ -10,6 +10,7 @@ def makeChange(coins, total):
 
     i = n - 1
     while(i >= 0):
+        print("Running")
         while (total >= coins[i]):
             total -= coins[i]
             ans.append(coins[i])
@@ -18,5 +19,5 @@ def makeChange(coins, total):
         print(ans[i], end=" ")
 
 
-print(makeChange([1, 2, 25], 37))
-print(makeChange([1256, 54, 48, 16, 102], 1453))
+makeChange([1, 2, 5], 10)
+#print(makeChange([1256, 54, 48, 16, 102], 1453))
