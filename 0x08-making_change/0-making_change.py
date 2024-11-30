@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Minimum number of coin"""
 
+
 def makeChange(coins, total):
     """makeChange function"""
     if total <= 0:
