@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Island Perimeter"""
 
+
 def island_perimeter(grid):
     """
     Calculates the Perimeter of an isand.
@@ -19,5 +20,5 @@ def island_perimeter(grid):
                 if i < rows - 1 and grid[i + 1][j] == 1:
                     perimeter -= 2
                 if j < cols - 1 and grid[i][j + 1] == 1:
-                    perimeter -=2
+                    perimeter -= 2
     return perimeter
