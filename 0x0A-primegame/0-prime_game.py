@@ -1,7 +1,15 @@
 #!/usr/bin/python3
+"""0-prime_game"""
 
 
 def SieveOfEratosthenes(n):
+    """
+    An algorithm to filter out prime numbers
+    in a range of numbers.
+
+    Parameters
+    n (int): The upper limit of the range.
+    """
     prime = [True for i in range(n+1)]
     p = 2
     count = 0
@@ -21,6 +29,12 @@ def SieveOfEratosthenes(n):
 
 
 def isWinner(x, nums):
+    """
+    Determine the winner of the game.
+    Parameters:
+    - x(num): The number of turns
+    nums [list]: The range of each round
+    """
     p1 = 0
     p2 = 0
     for i in range(x):
